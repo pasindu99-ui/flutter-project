@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/login.dart';
 
 void main() =>
-    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Home()));
+    runApp(MaterialApp(debugShowCheckedModeBanner: false, home: LoginPage()));
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -9,11 +10,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My First Application'),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 157, 11, 243),
-      ),
       body: Container(
         padding: EdgeInsets.all(20.0),
         color: Colors.amber,
