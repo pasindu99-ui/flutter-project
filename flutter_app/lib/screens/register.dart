@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/screen1.dart';
-import 'package:flutter_app/services/post.dart';
-import 'package:http/http.dart';
 
-class LoginPage extends StatelessWidget {
-  TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class RegisterPage extends StatelessWidget {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+
   bool validate = false;
 
+  RegisterPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("User-Login"),
+        title: Text("User-Register"),
         backgroundColor: const Color.fromARGB(255, 67, 3, 152),
       ),
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -42,22 +43,36 @@ class LoginPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  controller: nameController,
-                  style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  controller: usernameController,
+                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                   decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Color.fromARGB(255, 67, 3, 152))),
                       hintStyle: TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0), fontSize: 23),
-                      hintText: "Enter your name"),
+                      hintText: "Enter User Name"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: emailController,
+                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 67, 3, 152))),
+                      hintStyle: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 23),
+                      hintText: "Enter your E-mail"),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: passwordController,
-                  style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                   obscureText: true,
                   obscuringCharacter: "*",
                   decoration: const InputDecoration(
@@ -66,7 +81,7 @@ class LoginPage extends StatelessWidget {
                               color: Color.fromARGB(255, 67, 3, 152))),
                       hintStyle: TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0), fontSize: 23),
-                      hintText: "Enter password"),
+                      hintText: "Enter Password"),
                 ),
               ),
               Padding(
@@ -80,10 +95,10 @@ class LoginPage extends StatelessWidget {
                           const Color.fromARGB(255, 67, 3, 152)),
                     ),
                     onPressed: () {
-                      loginFunc(context, nameController.text,
-                          passwordController.text);
+                      RegisterFunc(context, usernameController.text,
+                          emailController.text, passwordController.text);
                     },
-                    child: const Text("Login"),
+                    child: const Text("Register"),
                   ),
                 ),
               ),
@@ -95,9 +110,9 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-void loginFunc(BuildContext context, String name, String password) {
-  sendDataToServer("hi");
-  if (name.isEmpty) {
+RegisterFunc(
+    BuildContext context, String userName, String email, String password) {
+  if (userName.isEmpty) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -108,6 +123,30 @@ void loginFunc(BuildContext context, String name, String password) {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text("User Name field cannot be empty"),
+            ],
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else if (email.isEmpty) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Alert!!"),
+          content: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("E-mail field cannot be empty"),
             ],
           ),
           actions: <Widget>[
@@ -150,12 +189,12 @@ void loginFunc(BuildContext context, String name, String password) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Alert!!"),
+          title: const Text("Alert!!"),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Name: $name"),
+              Text("Name: $userName"),
               Text("Password: $password"),
             ],
           ),
@@ -171,5 +210,6 @@ void loginFunc(BuildContext context, String name, String password) {
         );
       },
     );
+    ;
   }
 }
