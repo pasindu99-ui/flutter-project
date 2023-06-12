@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/login.dart';
 import 'package:flutter_app/screens/screen1.dart';
+import 'package:flutter_app/services/registerAuth.dart';
 
 class RegisterPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
@@ -202,8 +204,42 @@ RegisterFunc(
             ElevatedButton(
               child: Text("OK"),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Screen1()));
+                Future<int> foo() async {
+                  final response =
+                      await RegisterAuth("$userName", "$email", "$password");
+                  return response;
+                }
+
+                foo().then((value) {
+                  if (value == 200) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Alert!!"),
+                          content: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("Invalid Credentials"),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: const Text("OK"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                });
               },
             ),
           ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/screen1.dart';
-import 'package:flutter_app/services/post.dart';
+import 'package:flutter_app/services/loginAuth.dart';
 import 'package:http/http.dart';
 
 class LoginPage extends StatelessWidget {
@@ -96,7 +96,6 @@ class LoginPage extends StatelessWidget {
 }
 
 void loginFunc(BuildContext context, String name, String password) {
-  sendDataToServer("hi");
   if (name.isEmpty) {
     showDialog(
       context: context,
@@ -112,7 +111,7 @@ void loginFunc(BuildContext context, String name, String password) {
           ),
           actions: <Widget>[
             ElevatedButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -136,7 +135,7 @@ void loginFunc(BuildContext context, String name, String password) {
           ),
           actions: <Widget>[
             ElevatedButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -150,7 +149,7 @@ void loginFunc(BuildContext context, String name, String password) {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Alert!!"),
+          title: const Text("Alert!!"),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -161,10 +160,43 @@ void loginFunc(BuildContext context, String name, String password) {
           ),
           actions: <Widget>[
             ElevatedButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Screen1()));
+                Future<int> foo() async {
+                  final response = await loginUser("$name", "$password");
+                  return response;
+                }
+
+                foo().then((value) {
+                  if (value == 200) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Screen1()));
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Alert!!"),
+                          content: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("Invalid Credentials"),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: const Text("OK"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                });
               },
             ),
           ],
