@@ -61,7 +61,7 @@ class _Screen2State extends State<Screen2> {
                     ],
                   ),
                   child: Text(user.username ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontFamily: 'lobster',
                           fontSize: 20,
                           fontWeight: FontWeight.w100)),
@@ -75,9 +75,11 @@ class _Screen2State extends State<Screen2> {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 67, 3, 152),
-              ),
-              child: Text('Drawer Header'),
+                  color: const Color.fromARGB(255, 67, 3, 152),
+                  image: DecorationImage(
+                      image: AssetImage('assets/user2.jpg'),
+                      fit: BoxFit.cover)),
+              child: Text('Crud Application'),
             ),
             ListTile(
               title: const Text('List view'),

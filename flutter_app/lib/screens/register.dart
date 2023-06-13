@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/login.dart';
 import 'package:flutter_app/screens/screen1.dart';
@@ -46,11 +47,18 @@ class RegisterPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: usernameController,
-                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
                   decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Color.fromARGB(255, 67, 3, 152))),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
                       hintStyle: TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0), fontSize: 23),
                       hintText: "Enter User Name"),
@@ -101,6 +109,33 @@ class RegisterPage extends StatelessWidget {
                           emailController.text, passwordController.text);
                     },
                     child: const Text("Register"),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                          text: 'If you\'re already signed In, please  ',
+                          style: TextStyle(color: Colors.black, fontSize: 15)),
+                      TextSpan(
+                        text: 'go to Sign in page',
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          },
+                      ),
+                      TextSpan(text: '.'),
+                    ],
                   ),
                 ),
               ),
