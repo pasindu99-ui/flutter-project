@@ -11,6 +11,7 @@ class Screen2 extends StatefulWidget {
 
 class _Screen2State extends State<Screen2> {
   List<Usermodel>? userData;
+  bool loading = true;
 
   @override
   void initState() {
@@ -20,7 +21,9 @@ class _Screen2State extends State<Screen2> {
 
   Future<void> getData() async {
     userData = await getUsers();
-    setState(() {});
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -32,43 +35,45 @@ class _Screen2State extends State<Screen2> {
         title: const Text("Grid-View"),
         backgroundColor: const Color.fromARGB(255, 67, 3, 152),
       ),
-      body: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              childAspectRatio: 4 / 2,
-              crossAxisSpacing: 30,
-              mainAxisSpacing: 30),
-          padding: const EdgeInsets.all(20),
-          itemCount: userData?.length ?? 0,
-          itemBuilder: (BuildContext ctx, index) {
-            final user = userData![index];
-            return MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: InkWell(
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color.fromARGB(255, 67, 3, 152)
-                            .withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  childAspectRatio: 4 / 2,
+                  crossAxisSpacing: 30,
+                  mainAxisSpacing: 30),
+              padding: const EdgeInsets.all(20),
+              itemCount: userData?.length ?? 0,
+              itemBuilder: (BuildContext ctx, index) {
+                final user = userData![index];
+                return MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: InkWell(
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 67, 3, 152)
+                                .withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    ],
+                      child: Text(user.username ?? '',
+                          style: const TextStyle(
+                              fontFamily: 'Ubuntu',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w100)),
+                    ),
                   ),
-                  child: Text(user.username ?? '',
-                      style: const TextStyle(
-                          fontFamily: 'lobster',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w100)),
-                ),
-              ),
-            );
-          }),
+                );
+              }),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -77,8 +82,7 @@ class _Screen2State extends State<Screen2> {
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 67, 3, 152),
                   image: DecorationImage(
-                      image: AssetImage('assets/user2.jpg'),
-                      fit: BoxFit.cover)),
+                      image: AssetImage('assets/bg1.jpg'), fit: BoxFit.cover)),
               child: Text('Crud Application'),
             ),
             ListTile(
